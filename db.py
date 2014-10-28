@@ -13,10 +13,17 @@ def create_db_connnection():
     except KeyError:
         getConfig()
 
-    return connect(host=app.config['host'],
+    session = connect(host=app.config['host'],
         user=app.config['username'],
         passwd=app.config['password'],
         db=app.config['database'])
+
+    # Ensure the times are interpreted as GMT
+    cursor = session.cursor()
+    cursor.execute("SET TIME_ZONE='+00:00'")
+    cursor.close()
+
+    return session
 
 
 def getConfig():
