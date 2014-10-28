@@ -10,6 +10,7 @@ import sys
 
 from config import get_config
 from pyLibrary.sql.db import DB
+from pyLibrary.times.timer import Timer
 
 configuration = get_config()
 
@@ -18,6 +19,7 @@ choice = raw_input().lower()
 if choice not in ["yes", "y"]:
     exit()
 
-
-DB.execute_file(configuration, "tests/resources/scripts/create_db.sql")
-DB.execute_file(configuration, "tests/resources/sample_db/alerts.sql")
+with Timer("create db"):
+    DB.execute_file(configuration, "tests/resources/scripts/create_db.sql")
+with Timer("fill db"):
+    DB.execute_file(configuration, "tests/resources/sample_db/alerts.sql")
